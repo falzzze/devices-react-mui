@@ -8,6 +8,8 @@ const Header = () => {
     <AppBar position="static">
       <Toolbar>
         <IconButton
+          component={Link}
+          to="https://falzzze.github.io/devices-react-mui"
           size="large"
           edge="start"
           color="inherit"
