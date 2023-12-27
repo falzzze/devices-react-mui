@@ -1,24 +1,112 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState, createContext } from "react";
+import axios from "axios";
+import Header from "./components/Header";
+import TableComponent from "./components/TableComponent";
+import { Routes, Route } from "react-router-dom";
+import { Home } from "@mui/icons-material";
+
+const token = `RzBFAiEA92qN8JvTQ6BIgvjSTke8iQltj3SJf9vhkqyf5zcuUL4CIF1GRd1vLuSJrzzDqv80AF_BAiF91tCWPMvlhuRNrI0DeyJ1IjozLCJlIjoiMjAyMy0xMi0zMVQyMTowMDowMC4wMDArMDA6MDAifQ`;
+const URL = `https://gps.autotracker.group/api/devices`;
+
+export const AppContext = createContext();
 
 function App() {
+  const [data, setData] = useState([]);
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [inputSearch, setInputSearch] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(URL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setData(res.data);
+        setInputSearch(res.data);
+      })
+      .catch((err) => setError(err.message));
+  }, []);
+
+  const handleSearch = (e) => {
+    setInputSearch(
+      data.filter((value) => value.id.toString().includes(e.target.value))
+    );
+  };
+
+  const handleSearchById = (id) => {
+    axios
+      .get(URL + `?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setData(res.data);
+        setInputSearch(res.data);
+      })
+      .catch((err) => setError(err.message));
+  };
+
+  const handleNewDevice = () => {
+    if (!name) {
+      setError("Заполните поле");
+    } else {
+      axios
+        .post(
+          URL,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+          name
+        )
+        .then(() => {
+          setName("");
+        })
+        .catch((err) =>
+          setError("Недостаточно прав для выполнения операции:" + err.message)
+        );
+    }
+  };
+
+  const handleDeleteDevice = (id) => {
+    axios
+      .delete(URL + "/" + id, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .catch((err) =>
+        setError("Недостаточно прав для выполнения операции:" + err.message)
+      );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AppContext.Provider
+        value={{
+          data,
+          error,
+          name,
+          setName,
+          handleNewDevice,
+          handleDeleteDevice,
+          inputSearch,
+          handleSearch,
+          handleSearchById,
+        }}
+      >
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/devices" element={<TableComponent />} />
+        </Routes>
+      </AppContext.Provider>
+    </>
   );
 }
 
