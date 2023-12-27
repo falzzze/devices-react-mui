@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/devices-react-mui/static/css/main.ffe34ec7.css",
+    "main.js": "/devices-react-mui/static/js/main.31d0851b.js",
+    "index.html": "/devices-react-mui/index.html",
+    "main.ffe34ec7.css.map": "/devices-react-mui/static/css/main.ffe34ec7.css.map",
+    "main.31d0851b.js.map": "/devices-react-mui/static/js/main.31d0851b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ffe34ec7.css",
+    "static/js/main.31d0851b.js"
+  ]
+}
