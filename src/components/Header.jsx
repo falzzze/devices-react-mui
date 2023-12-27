@@ -36,7 +36,9 @@ const Header = () => {
         >
           Объекты
         </Typography>
-        <Button color="inherit">Войти</Button>
+        <Button component={Link} to={"/login"} color="inherit">
+          Войти
+        </Button>
       </Toolbar>
     </AppBar>
   );

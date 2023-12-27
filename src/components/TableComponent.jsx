@@ -1,4 +1,6 @@
 import { useContext } from "react";
+import moment from "moment";
+import "moment/locale/ru";
 import { AppContext } from "../App";
 import {
   Paper,
@@ -39,7 +41,7 @@ const TableComponent = () => {
         <Button
           sx={{ m: 1 }}
           variant="contained"
-          onClick={() => console.log(inputSearch[0].id)}
+          onClick={() => console.log(inputSearch)}
         >
           Поиск
         </Button>
@@ -68,7 +70,9 @@ const TableComponent = () => {
                   </TableCell>
                   <TableCell align="center">{row.name}</TableCell>
                   <TableCell align="center">{row.status}</TableCell>
-                  <TableCell align="center">{row.lastUpdate}</TableCell>
+                  <TableCell align="center">
+                    {moment(row.lastUpdate).format("LLL")}
+                  </TableCell>
                   <TableCell align="center">{row.uniqueId}</TableCell>
                   <SimpleSnackbar onClick={() => handleDeleteDevice(row.id)}>
                     Удалить

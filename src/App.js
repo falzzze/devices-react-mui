@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import TableComponent from "./components/TableComponent";
 import { Routes, Route } from "react-router-dom";
 import { Home } from "@mui/icons-material";
+import SignIn from "./components/Login";
 
 const token = `RzBFAiEA92qN8JvTQ6BIgvjSTke8iQltj3SJf9vhkqyf5zcuUL4CIF1GRd1vLuSJrzzDqv80AF_BAiF91tCWPMvlhuRNrI0DeyJ1IjozLCJlIjoiMjAyMy0xMi0zMVQyMTowMDowMC4wMDArMDA6MDAifQ`;
 const URL = `https://gps.autotracker.group/api/devices`;
@@ -29,13 +30,13 @@ function App() {
       })
       .catch((err) => setError(err.message));
   }, []);
-
+  // поиск по массиву
   const handleSearch = (e) => {
     setInputSearch(
       data.filter((value) => value.id.toString().includes(e.target.value))
     );
   };
-
+  // поиск по запросу id
   const handleSearchById = (id) => {
     axios
       .get(URL + `?id=${id}`, {
@@ -49,7 +50,7 @@ function App() {
       })
       .catch((err) => setError(err.message));
   };
-
+  // добавляем наименование
   const handleNewDevice = () => {
     if (!name) {
       setError("Заполните поле");
@@ -72,7 +73,7 @@ function App() {
         );
     }
   };
-
+  // удаляем наименование
   const handleDeleteDevice = (id) => {
     axios
       .delete(URL + "/" + id, {
@@ -104,6 +105,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/devices" element={<TableComponent />} />
+          <Route path="/login" element={<SignIn />} />
         </Routes>
       </AppContext.Provider>
     </>
